@@ -15,43 +15,43 @@ public class TimeWeightedLoadBalancerTest {
     public void basicTest() {
         LoadBalancer lb = new TimeWeightedLoadBalancer();
 
-        Connection a = Mockito.spy(new Connection("http://a.com"));
-        Connection b = Mockito.spy(new Connection("http://b.com"));
-        Mockito.when(a.ping()).thenReturn(lowestDelay[new Random().nextInt(lowestDelay.length)]);
-        Mockito.when(b.ping()).thenReturn(highestDelay[new Random().nextInt(highestDelay.length)]);
+        Connection a = createConnectionWithDelay(lowestDelay, "http://a.com");
+        Connection b = createConnectionWithDelay(highestDelay, "http://b.com");
 
         lb.addConnection(a);
         lb.addConnection(b);
 
-        for (int i = 0; i < 10; i++) {
-            lb.getConnection();
-        }
-        Assert.assertEquals("http://a.com", lb.getConnection().getConnectionUri());
+        checkThatLoadBalReturnsConnection(lb, "http://a.com");
     }
 
     @Test
     public void pingChangedTest() {
         LoadBalancer lb = new TimeWeightedLoadBalancer();
 
-        Connection a = Mockito.spy(new Connection("http://a.com"));
-        Connection b = Mockito.spy(new Connection("http://b.com"));
-        Mockito.when(a.ping()).thenReturn(lowestDelay[new Random().nextInt(lowestDelay.length)]);
-        Mockito.when(b.ping()).thenReturn(highestDelay[new Random().nextInt(highestDelay.length)]);
+        Connection a = createConnectionWithDelay(lowestDelay, "http://a.com");
+        Connection b = createConnectionWithDelay(highestDelay, "http://b.com");
 
         lb.addConnection(a);
         lb.addConnection(b);
 
-        for (int i = 0; i < 10; i++) {
-            lb.getConnection();
-        }
-        Assert.assertEquals("http://a.com", lb.getConnection().getConnectionUri());
+        checkThatLoadBalReturnsConnection(lb, "http://a.com");
 
         Mockito.when(a.ping()).thenReturn(highestDelay[new Random().nextInt(highestDelay.length)]);
         Mockito.when(b.ping()).thenReturn(lowestDelay[new Random().nextInt(lowestDelay.length)]);
 
+        checkThatLoadBalReturnsConnection(lb, "http://b.com");
+    }
+
+    private void checkThatLoadBalReturnsConnection(LoadBalancer lb, String s) {
         for (int i = 0; i < 10; i++) {
             lb.getConnection();
         }
-        Assert.assertEquals("http://b.com", lb.getConnection().getConnectionUri());
+        Assert.assertEquals(s, lb.getConnection().getConnectionUri());
+    }
+
+    private Connection createConnectionWithDelay(int[] delay, String connectionUri) {
+        Connection a = Mockito.spy(new Connection(connectionUri));
+        Mockito.when(a.ping()).thenReturn(delay[new Random().nextInt(delay.length)]);
+        return a;
     }
 }
