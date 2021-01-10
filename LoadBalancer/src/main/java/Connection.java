@@ -1,7 +1,7 @@
 /**
  * Created by Evgeniy Slobozheniuk on 16-Dec-20.
  */
-public class Connection implements Comparable {
+public class Connection implements Comparable<Connection> {
     private final String connectionUri;
     private int avgDelayMilliseconds;
 
@@ -24,7 +24,7 @@ public class Connection implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
+    public int compareTo(Connection o) {
         return this.avgDelayMilliseconds - ((Connection) o).avgDelayMilliseconds;
     }
 }

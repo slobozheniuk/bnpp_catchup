@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Created by Evgeniy Slobozheniuk on 17-Dec-20.
  */
-public class TimeWeightedLoadBalancer extends LoadBalancer {
+public class TimeWeightedLoadBalancer extends LoadBalancer { //TODO: Implement using Strategy pattern
     @Override
     public void addConnection(Connection connection) {
         connection.updateDelay();
