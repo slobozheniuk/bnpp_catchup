@@ -6,7 +6,6 @@ import java.util.*;
 public class TimeWeightedLoadBalancer extends LoadBalancer { //TODO: Implement using Strategy pattern
     @Override
     public void addConnection(Connection connection) {
-        connection.updateDelay();
         connections.add(connection);
     }
 
@@ -15,7 +14,10 @@ public class TimeWeightedLoadBalancer extends LoadBalancer { //TODO: Implement u
         if (connections.size() == 0) {
             throw new IllegalStateException("No connections in the pool");
         }
-        connections.forEach(Connection::updateDelay); //TODO: TimerTask to update not every call, but once fixed time elapsed
         return connections.stream().min(Connection::compareTo).get(); //TODO: Not really elegant, everytime we look through all objects
+    }
+
+    public void addFeedback(Connection connection, int respTime) {
+        connection.updateDelay(respTime);
     }
 }

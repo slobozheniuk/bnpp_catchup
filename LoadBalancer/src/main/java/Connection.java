@@ -8,23 +8,18 @@ public class Connection implements Comparable<Connection> {
     public Connection(String connectionUri) {
         this.connectionUri = connectionUri;
         this.avgDelayMilliseconds = 0;
-        updateDelay();
     }
 
     public String getConnectionUri() {
         return connectionUri;
     }
 
-    public void updateDelay() {
-        this.avgDelayMilliseconds = (this.avgDelayMilliseconds + ping()) / 2;
-    }
-
-    public int ping() {
-        return 0; // Here should real ping have to be implemented, for now using Mockito for this
+    public void updateDelay(int respTime) {
+        this.avgDelayMilliseconds = (this.avgDelayMilliseconds + respTime) / 2;
     }
 
     @Override
     public int compareTo(Connection o) {
-        return this.avgDelayMilliseconds - ((Connection) o).avgDelayMilliseconds;
+        return this.avgDelayMilliseconds - o.avgDelayMilliseconds;
     }
 }
