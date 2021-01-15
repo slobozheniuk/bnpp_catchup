@@ -1,12 +1,11 @@
-import java.util.*;
+import java.util.List;
 
 /**
- * Created by Evgeniy Slobozheniuk on 17-Dec-20.
+ * Created by Evgeniy Slobozheniuk on 15 0121.
  */
-public class TimeWeightedLoadBalancer extends LoadBalancer {
-
+public class TimeWeightedLoadBalancer implements LoadBalancer {
     @Override
-    public Connection getConnection() {
+    public Connection getConnection(List<Connection> connections) {
         if (connections.size() == 0) {
             throw new IllegalStateException("No connections in the pool");
         }

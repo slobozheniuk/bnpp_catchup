@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="LoadBalancer" />
         <module name="HashMap" />
+        <module name="LoadBalancerCore" />
+        <module name="StrategyLoadBalancer" />
+        <module name="LoadBalancer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11" />
